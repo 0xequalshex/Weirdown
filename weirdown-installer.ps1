@@ -14,7 +14,7 @@ if (!(Test-Path $installDir)) {
 }
 
 # 2️⃣ Direct links
-$appUrl    = "https://github.com/0xequalshex/Weirdown/releases/download/meow/WeirDown.exe"
+$appUrl    = "https://github.com/0xequalshex/Weirdown/releases/download/sdvsdvfdv/WeirDown.exe"
 $ffmpegUrl = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"
 
 # 3️⃣ Download WeirDown
