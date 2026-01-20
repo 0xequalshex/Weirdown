@@ -2,7 +2,7 @@
 # WeirDownTool Automatic Installer
 # =========================================
 
-# Hide download progress for cleaner output
+# Show download progress
 $ProgressPreference = 'Continue'
 
 # 1️⃣ Installation directory
@@ -13,7 +13,7 @@ if (!(Test-Path $installDir)) {
     New-Item -ItemType Directory -Path $installDir -Force | Out-Null
 }
 
-# 2️⃣ Download URLs (CHANGE THESE)
+# 2️⃣ Download URLs (Using GPL-Small Static for minimal size and reliability)
 $appUrl    = "https://github.com/0xequalshex/Weirdown/releases/download/meow/WeirDown.exe"
 $ffmpegUrl = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-small.zip"
 
@@ -30,33 +30,33 @@ catch {
     exit
 }
 
-# 4️⃣ Check if FFmpeg exists
+# 4️⃣ Check and install FFmpeg
 if (!(Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
 
-    Write-Host "⚠ FFmpeg not found. Downloading dependency..." -ForegroundColor Yellow
+    Write-Host "⚠ FFmpeg not found. Downloading lite build..." -ForegroundColor Yellow
 
     $zipPath  = "$installDir\ffmpeg.zip"
     $tempDir  = "$installDir\ffmpeg-temp"
 
     try {
-        # Download FFmpeg
+        # Download FFmpeg ZIP
         Invoke-WebRequest -Uri $ffmpegUrl -OutFile $zipPath
 
         # Extract archive
         Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
 
-        # Move ffmpeg and ffprobe binaries
-        Get-ChildItem $tempDir -Recurse -Include ffmpeg.exe, ffprobe.exe |
-            Move-Item -Destination $installDir -Force
+        # Locate and move binaries (using Recurse to handle internal folder structures)
+        Get-ChildItem -Path $tempDir -Recurse -Filter "ffmpeg.exe" | Move-Item -Destination $installDir -Force
+        Get-ChildItem -Path $tempDir -Recurse -Filter "ffprobe.exe" | Move-Item -Destination $installDir -Force
 
-        # Clean up temporary files
+        # Cleanup temporary files
         Remove-Item $zipPath -Force
         Remove-Item $tempDir -Recurse -Force
 
         Write-Host "✅ FFmpeg & FFprobe installed successfully" -ForegroundColor Green
     }
     catch {
-        Write-Host "❌ Failed to install FFmpeg" -ForegroundColor Red
+        Write-Host "❌ Failed to install FFmpeg. Error: $($_.Exception.Message)" -ForegroundColor Red
         exit
     }
 }
