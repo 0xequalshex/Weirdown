@@ -17,7 +17,7 @@ class DummyFile(object):
     def warning(self, msg): pass  
     def error(self, msg): pass
 
-USER_HOME = os.path.dirname(os.path.abspath(__file__))
+USER_HOME = USER_HOME = os.path.expanduser("~")
 CONFIG_DIR = os.path.join(USER_HOME, ".mediaDownloader")
 CONFIG_FILE = os.path.join(CONFIG_DIR, "weirdown-settings.txt")
 
