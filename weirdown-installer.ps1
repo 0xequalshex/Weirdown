@@ -9,7 +9,7 @@ if (!(Test-Path $installDir)) {
     New-Item -ItemType Directory -Path $installDir -Force | Out-Null
 }
 
-# 2️⃣ Updated URLs 
+# 2️⃣ Reliable URLs
 $appUrl    = "https://github.com/0xequalshex/Weirdown/releases/download/meow/WeirDown.exe"
 $ffmpegUrl = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"
 
@@ -22,7 +22,7 @@ try {
     Write-Host "✅ WeirDownTool downloaded successfully" -ForegroundColor Green
 }
 catch {
-    Write-Host "❌ Failed to download WeirDownTool. Check your internet connection." -ForegroundColor Red
+    Write-Host "❌ Failed to download WeirDownTool: $($_.Exception.Message)" -ForegroundColor Red
     Pause
     exit
 }
@@ -34,10 +34,12 @@ if (!(Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
     $tempDir  = "$installDir\ffmpeg-temp"
 
     try {
-        Invoke-WebRequest -Uri $ffmpegUrl -OutFile $zipPath -ErrorAction Stop
+        Invoke-WebRequest -Uri $ffmpegUrl -OutFile $zipPath -UserAgent "Mozilla/5.0" -ErrorAction Stop
+        
+        Write-Host "📦 Extracting FFmpeg..." -ForegroundColor Gray
         Expand-Archive -Path $zipPath -DestinationPath $tempDir -Force
 
-        # Search for the exe files specifically
+        # Locate and move binaries
         $ffExe = Get-ChildItem -Path $tempDir -Recurse -Filter "ffmpeg.exe" | Select-Object -First 1
         $ffProbe = Get-ChildItem -Path $tempDir -Recurse -Filter "ffprobe.exe" | Select-Object -First 1
 
@@ -46,14 +48,16 @@ if (!(Get-Command ffmpeg -ErrorAction SilentlyContinue)) {
             Move-Item -Path $ffProbe.FullName -Destination $installDir -Force
             Write-Host "✅ FFmpeg & FFprobe installed successfully" -ForegroundColor Green
         } else {
-            throw "Could not find ffmpeg.exe inside the downloaded ZIP."
+            throw "Binaries not found inside the ZIP."
         }
 
+        # Cleanup
         Remove-Item $zipPath -Force
         Remove-Item $tempDir -Recurse -Force
     }
     catch {
         Write-Host "❌ FFmpeg Error: $($_.Exception.Message)" -ForegroundColor Red
+        if (Test-Path $zipPath) { Remove-Item $zipPath }
         Pause
         exit
     }
@@ -68,4 +72,5 @@ if ($oldPath -notlike "*$installDir*") {
 }
 
 Write-Host "`n🎉 Installation Complete!" -ForegroundColor Cyan
+Write-Host "You can now run 'weirdown' from any terminal."
 Pause
