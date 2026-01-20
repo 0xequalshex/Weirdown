@@ -15,7 +15,7 @@ if (!(Test-Path $installDir)) {
 
 # 2️⃣ Download URLs (CHANGE THESE)
 $appUrl    = "https://github.com/0xequalshex/Weirdown/releases/download/meow/WeirDown.exe"
-$ffmpegUrl = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared-small.zip"
+$ffmpegUrl = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-small.zip"
 
 Write-Host "⬇ Installing WeirDownTool..." -ForegroundColor Cyan
 
