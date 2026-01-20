@@ -1,5 +1,5 @@
 # =========================================
-# WeirDownTool Automatic Installer (Fail-Safe Version)
+# WeirDownTool Automatic Installer
 # =========================================
 
 # Force PowerShell to use TLS 1.2 for secure downloads
