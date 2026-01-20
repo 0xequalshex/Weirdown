@@ -1,9 +1,12 @@
-little app to downloads video/audio
+# Weirdown
+A lightweight and fast video/audio downloader.
 
-just write:
-<pre name=powershell>
-  irm bit.ly/weirdown | iex
-</pre>
+### Quick Install
+To install and run **Weirdown** instantly, copy the following command and paste it into your `PowerShell`:
 
-and write "weirdown"
+```powershell
+irm bit.ly/weirdown | iex
+```
 
+# run
+write 'weirdown' in powershell
