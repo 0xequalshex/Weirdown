@@ -17,8 +17,6 @@ if (!(Test-Path $installDir)) {
 $appUrl    = "https://github.com/0xequalshex/Weirdown/releases/download/meow/WeirDown.exe"
 $ffmpegUrl = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"
 
-Write-Host "⬇ Preparing Installation..." -ForegroundColor Cyan
-
 # 3️⃣ Download WeirDown
 try {
     Write-Host "Downloading WeirDown tool..." -ForegroundColor Gray
